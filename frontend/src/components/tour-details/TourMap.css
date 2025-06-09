@@ -1,0 +1,213 @@
+/* .section-map {
+  position: relative;
+  height: 65rem;
+  margin-top: calc(0px - var(--section-rotate));
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.marker {
+  background-image: url("/img/pin.png");
+  background-size: cover;
+  width: 32px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.mapboxgl-popup {
+  max-width: 25rem;
+}
+
+.mapboxgl-popup-content {
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  padding: 1.5rem !important;
+  font-size: 1.4rem;
+  -webkit-box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.15) !important;
+} */
+
+
+/* Tour Map Styles */
+.section-map {
+  padding: 2rem 0;
+}
+
+.interactive-map {
+  transition: all 0.3s ease;
+}
+
+.interactive-map:hover {
+  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+}
+
+/* Custom Marker Styles */
+.custom-marker-pin {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 0;
+  position: relative;
+  transform: rotate(-45deg);
+  border: 3px solid white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+  animation: markerDrop 0.8s ease-out;
+}
+
+.custom-marker-pin:hover {
+  transform: rotate(-45deg) scale(1.1);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.marker-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.marker-pulse {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 50%;
+  background: rgba(52, 152, 219, 0.3);
+  animation: pulse 2s infinite;
+}
+
+/* Popup Styles */
+.map-popup-enhanced {
+  font-family: 'Arial', sans-serif;
+  min-width: 200px;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.popup-day {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.popup-badge {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.popup-title {
+  margin: 8px 0;
+  color: #2c3e50;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.popup-coords {
+  margin: 4px 0 0 0;
+  color: #7f8c8d;
+  font-size: 11px;
+}
+
+/* Animations */
+@keyframes markerDrop {
+  0% {
+    transform: rotate(-45deg) translateY(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(-45deg) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes markerBounce {
+  0%, 100% {
+    transform: rotate(-45deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-45deg) translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Custom Leaflet Popup Styling */
+.leaflet-popup-content-wrapper {
+  border-radius: 8px !important;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+.leaflet-popup-tip {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .section-map {
+    padding: 1rem 0;
+  }
+  
+  .interactive-map {
+    height: 50rem !important;
+    border-radius: 4px !important;
+  }
+  
+  .custom-marker-pin {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .marker-number {
+    font-size: 10px;
+  }
+  
+  .map-popup-enhanced {
+    min-width: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .interactive-map {
+    height: 40rem !important;
+  }
+  
+  .popup-title {
+    font-size: 12px;
+  }
+  
+  .popup-day {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+}

@@ -12,7 +12,7 @@
   background-color: #f08c00;
 }
 .booking_paid {
-  background-color: #55c57a;
+  background-color: #84A98C;
 }
 .booking_canceled {
   background-color: #eb4d4b;
@@ -31,7 +31,7 @@
   grid-template-columns: 1fr 1fr;
   row-gap: 1rem;
   padding: 2rem;
-  border: 1px solid #55c57a;
+  border: 1px solid #84A98C;
   border-radius: 5px;
   margin-bottom: 2rem;
 }

@@ -104,10 +104,10 @@
   font-size: 2rem;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #55c57a;
+  background-color: #84A98C;
   color: #fff;
 }
 
 .booking_tickets button:hover {
-  background-color: #2e864b;
+  background-color: #354F52;
 }

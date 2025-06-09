@@ -7,12 +7,12 @@
 }
 
 ::-moz-selection {
-  background-color: #55c57a;
+  background-color: #84A98C;
   color: #fff;
 }
 
 ::selection {
-  background-color: #55c57a;
+  background-color: #84A98C;
   color: #fff;
 }
 
@@ -36,7 +36,7 @@ body {
   line-height: 1.6;
   font-weight: 300;
   font-family: 'Lato', sans-serif;
-  color: #777;
+  color: #354F52;
   min-height: 100vh;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -110,8 +110,8 @@ body {
   font-size: 2.25rem;
   text-transform: uppercase;
   font-weight: 700;
-  background-image: -webkit-gradient(linear, left top, right top, from(#7dd56f), to(#28b487));
-  background-image: linear-gradient(to right, #7dd56f, #28b487);
+  background-image: -webkit-gradient(linear, left top, right top, from(#CAD2C5), to(#52796F));
+  background-image: linear-gradient(to right, #CAD2C5, #52796F);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -144,13 +144,13 @@ body {
     linear,
     left top,
     right bottom,
-    from(rgba(125, 213, 111, 0.85)),
-    to(rgba(40, 180, 135, 0.85))
+    from(rgba(202, 210, 197, 0.85)),
+    to(rgba(82, 121, 111, 0.85))
   );
   background-image: linear-gradient(
     to bottom right,
-    rgba(125, 213, 111, 0.85),
-    rgba(40, 180, 135, 0.85)
+    rgba(202, 210, 197, 0.85),
+    rgba(82, 121, 111, 0.85)
   );
 }
 
@@ -224,26 +224,26 @@ body {
 .btn--white,
 .btn--white:focus {
   background-color: #fff;
-  color: #777;
+  color: #354F52;
 }
 .btn--white::after {
   background-color: #fff;
 }
 .btn--google {
-  outline: 1px solid #777;
+  outline: 1px solid #354F52;
   outline-offset: -1px;
 }
 
 .btn--green {
-  background-color: #55c57a;
+  background-color: #84A98C;
   color: #fff;
 }
 .btn--green:focus {
   outline: none;
-  background-color: #2e864b;
+  background-color: #354F52;
 }
 .btn--green::after {
-  background-color: #55c57a;
+  background-color: #84A98C;
 }
 
 .btn--red {
@@ -272,7 +272,7 @@ body {
 .btn-small,
 .btn-small:link,
 .btn-small:visited {
-  background-color: #55c57a;
+  background-color: #84A98C;
   color: #fff;
   font-size: 1.4rem;
   padding: 1.25rem 3rem;
@@ -288,22 +288,22 @@ body {
 }
 
 .btn-small:hover {
-  background-color: #7dd56f;
+  background-color: #CAD2C5;
 }
 
 .btn-text:link,
 .btn-text:visited {
-  color: #55c57a;
+  color: #84A98C;
   display: inline-block;
   text-decoration: none;
-  border-bottom: 1px solid #55c57a;
+  border-bottom: 1px solid #84A98C;
   padding: 3px;
   -webkit-transition: all 0.2s;
   transition: all 0.2s;
 }
 
 .btn-text:hover {
-  background-color: #55c57a;
+  background-color: #84A98C;
   color: #fff;
   -webkit-box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
@@ -320,7 +320,7 @@ body {
 
 .btn-text:focus {
   outline: none;
-  outline: 3px solid #55c57a;
+  outline: 3px solid #84A98C;
   outline-offset: 3px;
 }
 
@@ -330,18 +330,18 @@ body {
   font-size: 1.6rem;
   font-family: inherit;
   background-color: #fff;
-  color: #55c57a;
+  color: #84A98C;
   padding: 3px;
   text-decoration: none;
   border: none;
-  border-bottom: 1px solid #55c57a;
+  border-bottom: 1px solid #84A98C;
   -webkit-transition: all 0.2s;
   transition: all 0.2s;
   cursor: pointer;
 }
 
 .btn-secondary:hover {
-  background-color: #55c57a;
+  background-color: #84A98C;
   color: #fff;
   -webkit-box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
@@ -350,7 +350,7 @@ body {
 }
 
 .btn-secondary:active {
-  outline: 3px solid #55c57a;
+  outline: 3px solid #84A98C;
   outline-offset: 3px;
 }
 
@@ -420,10 +420,10 @@ body {
 
 .icon-color-5,
 .icon-green {
-  fill: #55c57a;
+  fill: #84A98C;
 }
 .icon-color-4 {
-  fill: #aad457;
+  fill: #84A98C;
 }
 .icon-color-3 {
   fill: #ffe234;
@@ -439,7 +439,7 @@ body {
   fill: #bbb;
 }
 .icon-dark {
-  fill: #777;
+  fill: #354F52;
 }
 .icon-white {
   fill: #fff;
@@ -551,7 +551,7 @@ body {
 .read-more {
   font-size: 1.4rem;
   font-weight: 700;
-  color: #55c57a;
+  color: #84A98C;
   cursor: pointer;
   text-transform: uppercase;
 }
@@ -622,7 +622,7 @@ body {
   color: inherit;
 }
 .table-link-item:hover h3 {
-  color: #55c57a;
+  color: #84A98C;
 }
 .manage-user-img {
   height: 5rem;
@@ -639,5 +639,5 @@ body {
   font-size: 1.6rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: #555;
+  color: #2F3E46;
 }

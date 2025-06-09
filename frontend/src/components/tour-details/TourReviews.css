@@ -8,10 +8,10 @@
     linear,
     left top,
     right bottom,
-    from(#7dd56f),
-    to(#28b487)
+    from(#CAD2C5),
+    to(#52796F)
   );
-  background: linear-gradient(to right bottom, #7dd56f, #28b487);
+  background: linear-gradient(to right bottom, #CAD2C5, #52796F);
   clip-path: polygon(
     0 var(--section-rotate),
     100% 0,

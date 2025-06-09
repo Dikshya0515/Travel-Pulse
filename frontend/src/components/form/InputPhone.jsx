@@ -19,7 +19,7 @@ export default function InputPhone({ value, onChange, valid }) {
         border: 'none',
         borderTop: '3px solid transparent',
         borderBottom: '3px solid',
-        borderBottomColor: focus ? (valid ? '#55c57a' : '#ff7730') : 'transparent',
+        borderBottomColor: focus ? (valid ? '#84A98C' : '#ff7730') : 'transparent',
         borderRadius: '4px',
         transition: 'all 0.3s',
       }}
@@ -27,7 +27,7 @@ export default function InputPhone({ value, onChange, valid }) {
         backgroundColor: '#d2d2d2',
         border: 'none',
         borderBottom: '3px solid',
-        borderBottomColor: focus ? (valid ? '#55c57a' : '#ff7730') : 'transparent',
+        borderBottomColor: focus ? (valid ? '#84A98C' : '#ff7730') : 'transparent',
         borderRadius: '4px',
         transition: 'all 0.3s',
       }}

@@ -40,14 +40,14 @@
   margin-left: 1.5rem;
 }
 .footer__nav a {
-  color: #777;
+  color: #354F52;
   text-decoration: none !important;
   -webkit-transition: all 0.2s;
   transition: all 0.2s;
 }
 .footer__nav a:hover,
 .footer__nav a:active {
-  color: #55c57a;
+  color: #84A98C;
 }
 .footer__copyright {
   justify-self: end;

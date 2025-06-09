@@ -19,13 +19,13 @@
 }
 .form__input:focus {
   outline: none;
-  border-bottom: 3px solid #55c57a;
+  border-bottom: 3px solid #84A98C;
 }
 .form__input:focus:invalid {
   border-bottom: 3px solid #ff7730;
 }
 .form__input::-webkit-input-placeholder {
-  color: #555;
+  color: #2F3E46;
   text-transform: uppercase;
 }
 

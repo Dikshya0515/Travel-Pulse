@@ -104,7 +104,7 @@ ol {
     margin-left: 5px; 
 }
 a {
-  color: #55c57a;
+  color: #84A98C;
   text-decoration: underline; 
 }
 .btn {
@@ -122,10 +122,10 @@ a {
 }
   .btn a {
     background-color: #ffffff;
-    border: solid 1px #55c57a;
+    border: solid 1px #84A98C;
     border-radius: 5px;
     box-sizing: border-box;
-    color: #55c57a;
+    color: #84A98C;
     cursor: pointer;
     display: inline-block;
     font-size: 14px;
@@ -136,11 +136,11 @@ a {
     text-transform: capitalize; 
 }
 .btn-primary table td {
-  background-color: #55c57a; 
+  background-color: #84A98C; 
 }
 .btn-primary a {
-  background-color: #55c57a;
-  border-color: #55c57a;
+  background-color: #84A98C;
+  border-color: #84A98C;
   color: #ffffff; 
 }
 .last {
@@ -249,11 +249,11 @@ hr {
     text-decoration: none !important; 
   }
   .btn-primary table td:hover {
-    background-color: #2e864b !important; 
+    background-color: #354F52 !important; 
   }
   .btn-primary a:hover {
-    background-color: #2e864b !important;
-    border-color: #2e864b !important; 
+    background-color: #354F52 !important;
+    border-color: #354F52 !important; 
   } 
 }
 .otp-value {

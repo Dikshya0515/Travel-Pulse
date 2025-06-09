@@ -66,7 +66,7 @@ export default function CodeVerification() {
       validate2FA({ code })
         .unwrap()
         .then(() => {
-          dispatch(setAlert({ type: "success", msg: `Welcome to Natours!` }));
+          dispatch(setAlert({ type: "success", msg: `Welcome to TravelPulse!` }));
           navigate(redirect);
         });
     } else if (searchParams.get("type") === "verification") {
@@ -87,7 +87,7 @@ export default function CodeVerification() {
   return (
     <Container>
       <Meta
-        title={`Code Verify | Natours`}
+        title={`Code Verify | TravelPulse`}
         description="Please don't share your code with anyone. Top Secret!"
       />
       {email ? (

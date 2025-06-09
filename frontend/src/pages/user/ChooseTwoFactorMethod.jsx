@@ -49,7 +49,7 @@ export default function ChooseTwoFactorMethod() {
   return (
     <Container>
       <Meta
-        title={`Choose Two-factor Method | Natours`}
+        title={`Choose Two-factor Method | TravelPulse`}
         description="Choose two factor authentication method"
       />
       <InnerContainer className="login-form" heading="Log into your account">

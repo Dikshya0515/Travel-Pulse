@@ -30,7 +30,7 @@ export default function Login() {
     if (error) dispatch(setAlert({ type: 'error', msg: error }));
 
     if (data?.status === 'SUCCESS') {
-      dispatch(setAlert({ type: 'success', msg: `Welcome to Natours!` }));
+      dispatch(setAlert({ type: 'success', msg: `Welcome to TravelPulse!` }));
       navigate('/');
     }
   }, [data, dispatch, navigate, error]);
@@ -49,7 +49,7 @@ export default function Login() {
 
   return (
     <Container>
-      <Meta title="Signup | Natours" description="Signup to Natours with email and password" />
+      <Meta title="Signup | TravelPulse" description="Signup to TravelPulse with email and password" />
       <InnerContainer className="login-form" heading="Create new account">
         <form onSubmit={submitHandler}>
           <Input

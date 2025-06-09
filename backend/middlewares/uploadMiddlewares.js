@@ -34,7 +34,7 @@ const cloudinaryUpload = async (buffer, filename, next, type) =>
     cloudinary.uploader
       .upload_stream(
         {
-          folder: `natours-${type}`,
+          folder: `TravelPulse-${type}`,
           public_id: filename,
         },
         (error, result) => {

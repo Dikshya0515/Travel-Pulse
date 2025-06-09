@@ -66,7 +66,7 @@ export default function ForgotPassword() {
   return (
     <Container>
       <Meta
-        title={`Forgot Password | Natours`}
+        title={`Forgot Password | TravelPulse`}
         description="Forgot your password? Please enter your email and choose a method to reset password"
       />
       <InnerContainer className="login-form" heading="Account Recovery">

@@ -1,6 +1,6 @@
 module.exports = (firstName, url) => `<!-- CONTENT-->
 <p>Hi ${firstName},</p>
-<p>Welcome to Natours, we're glad to have you 🎉🙏</p>
+<p>Welcome to TravelPulse, we're glad to have you 🎉🙏</p>
 <p>We're all a big familiy here, so make sure to upload your user photo so we get to know you a bit better!</p>
 <table class="btn btn-primary" role="presentation" border="0" cellpadding="0" cellspacing="0">
   <tbody>

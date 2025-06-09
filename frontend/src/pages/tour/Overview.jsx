@@ -43,7 +43,7 @@ export default function Overview() {
     if (error) dispatch(setAlert({ type: "error", msg: error }));
 
     if (searchParams.get("status") === "success")
-      dispatch(setAlert({ type: "success", msg: `Welcome to Natours!` }));
+      dispatch(setAlert({ type: "success", msg: `Welcome to TravelPulse!` }));
   }, [error, dispatch, searchParams]);
 
   let content;

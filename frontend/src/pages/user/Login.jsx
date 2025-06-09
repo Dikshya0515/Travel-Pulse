@@ -25,7 +25,7 @@ export default function Login() {
     if (error) dispatch(setAlert({ type: "error", msg: error }));
 
     if (data?.status === "SUCCESS" && !data?.userId) {
-      dispatch(setAlert({ type: "success", msg: `Welcome to Natours!` }));
+      dispatch(setAlert({ type: "success", msg: `Welcome to TravelPulse!` }));
       navigate(redirect);
     }
 
@@ -50,8 +50,8 @@ export default function Login() {
   return (
     <Container>
       <Meta
-        title="Login | Natours"
-        description="Login to Natours with local and third-party providers"
+        title="Login | TravelPulse"
+        description="Login to TravelPulse with local and third-party providers"
       />
       <InnerContainer className="login-form" heading="Log into your account">
         <form onSubmit={submitHandler}>

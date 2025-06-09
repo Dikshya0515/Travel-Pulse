@@ -90,8 +90,8 @@ export default function ManageReviews() {
     <UserContainer>
       <InnerContainer className="manage-view__inner-container">
         <Meta
-          title="Manage reviews | Natours"
-          description="Edit and delete reviews in Natours"
+          title="Manage reviews | TravelPulse"
+          description="Edit and delete reviews in TravelPulse"
         />
 
         {modal && (

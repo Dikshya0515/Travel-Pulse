@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer__logo">
-        <img src="/img/logo-green.png" alt="Natours logo" />
+        <img src="/img/logo-green.png" alt="TravelPulse logo" />
       </div>
       <ul className="footer__nav">
         <li>

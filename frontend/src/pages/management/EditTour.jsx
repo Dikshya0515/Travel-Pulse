@@ -181,7 +181,7 @@ export default function EditTour() {
         {fetchData && (
           <Meta
             title={`${fetchData.data?.tour.name} | Edit`}
-            description="Edit tour in Natours"
+            description="Edit tour in TravelPulse"
           />
         )}
 

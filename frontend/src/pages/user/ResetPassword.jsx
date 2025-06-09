@@ -66,7 +66,7 @@ export default function ResetPassword() {
   return (
     <Container>
       <Meta
-        title={`Reset Password | Natours`}
+        title={`Reset Password | TravelPulse`}
         description="Reset your password"
       />
 

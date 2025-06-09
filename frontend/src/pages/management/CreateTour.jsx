@@ -70,8 +70,8 @@ export default function CreateTour() {
   return (
     <UserContainer backLink>
       <Meta
-        title={`Create Tour | Natours`}
-        description="Create a tour in Natours"
+        title={`Create Tour | TravelPulse`}
+        description="Create a tour in TravelPulse"
       />
       <InnerContainer
         heading="Create new tour"

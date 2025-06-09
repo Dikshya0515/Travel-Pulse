@@ -23,7 +23,7 @@ export default function ValidateTwoFactor() {
     if (error) dispatch(setAlert({ type: "error", msg: error }));
 
     if (data?.status === "SUCCESS") {
-      dispatch(setAlert({ type: "success", msg: `Welcome to Natours!` }));
+      dispatch(setAlert({ type: "success", msg: `Welcome to TravelPulse!` }));
       navigate(redirect);
     }
   }, [data, navigate, redirect, dispatch, error]);
@@ -36,7 +36,7 @@ export default function ValidateTwoFactor() {
   return (
     <Container>
       <Meta
-        title={`Validate Two Factor | Natours`}
+        title={`Validate Two Factor | TravelPulse`}
         description="Validate code from your authentication app or choose another way"
       />
       <InnerContainer className="login-form" heading="Log into your account">
@@ -44,7 +44,7 @@ export default function ValidateTwoFactor() {
           <h3 className="sub-heading ma-bt-lg">Two-Factor Authentication</h3>
           <p className="title__description">
             Open Authentication app in your smartphone and enter the code for
-            Natours
+            TravelPulse
           </p>
           <Input
             required

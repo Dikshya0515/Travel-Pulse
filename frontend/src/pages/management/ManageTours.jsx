@@ -99,8 +99,8 @@ export default function ManageTours() {
     <UserContainer>
       <InnerContainer className="manage-view__inner-container">
         <Meta
-          title="Manage tours | Natours"
-          description="Create, edit and delete tours in Natours"
+          title="Manage tours | TravelPulse"
+          description="Create, edit and delete tours in TravelPulse"
         />
 
         {modal && (

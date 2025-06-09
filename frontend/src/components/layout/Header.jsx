@@ -31,7 +31,7 @@ export default function Header() {
         <Search />
       </nav>
       <Link to="/" className="header__logo">
-        <img src="/img/logo-white.png" alt="Natours logo" />
+        <img src="/img/logo-white.png" alt="TravelPulse logo" />
       </Link>
       <nav className="nav nav--user">
         {user ? (

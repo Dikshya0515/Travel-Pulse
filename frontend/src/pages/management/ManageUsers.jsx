@@ -91,8 +91,8 @@ export default function ManageUsers() {
     <UserContainer>
       <InnerContainer className="manage-view__inner-container">
         <Meta
-          title="Manage users | Natours"
-          description="Edit and delete users in Natours"
+          title="Manage users | TravelPulse"
+          description="Edit and delete users in TravelPulse"
         />
 
         {modal && (

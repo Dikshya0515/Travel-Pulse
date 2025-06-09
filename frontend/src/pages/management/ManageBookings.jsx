@@ -90,8 +90,8 @@ export default function ManageBookings() {
     <UserContainer>
       <InnerContainer className="manage-view__inner-container">
         <Meta
-          title="Manage bookings | Natours"
-          description="View, cancel and refund bookings in Natours"
+          title="Manage bookings | TravelPulse"
+          description="View, cancel and refund bookings in TravelPulse"
         />
 
         {modal && (

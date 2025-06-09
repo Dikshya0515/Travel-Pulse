@@ -12,7 +12,7 @@ export default function MyDetails() {
       <UserContainer>
         <Meta
           title={`${user.name} | Profile`}
-          description="View your profile in Natours"
+          description="View your profile in TravelPulse"
         />
         <div className="user-view__form-container">
           <UserProfile user={user} />

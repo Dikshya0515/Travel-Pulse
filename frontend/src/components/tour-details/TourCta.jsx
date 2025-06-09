@@ -23,7 +23,7 @@ export default function TourCta({
     <section className="section-cta">
       <div className="cta">
         <div className="cta__img cta__img--logo">
-          <img src="/img/logo-white.png" alt="Natours logo" />
+          <img src="/img/logo-white.png" alt="TravelPulse logo" />
         </div>
         <img
           className="cta__img cta__img--1"

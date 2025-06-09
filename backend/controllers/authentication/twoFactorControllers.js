@@ -24,7 +24,7 @@ exports.enable2FA = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   const imageURL = await QRCode.toDataURL(
-    authenticator.keyuri(req.params.id, "Natours", secret)
+    authenticator.keyuri(req.params.id, "Travelpulse", secret)
   );
 
   res.status(200).json({ status: "SUCCESS", secret, imageURL });

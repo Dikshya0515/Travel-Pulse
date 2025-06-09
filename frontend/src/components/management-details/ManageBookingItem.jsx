@@ -11,8 +11,11 @@ export default function ManageBookingItem({ booking }) {
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
   const [cancelBooking, { isLoading, error, data }] = useCancelBookingByIdMutation();
-  const { user, tour } = booking;
-  const canCancel = booking.status === 'pending' || booking.status === 'paid';
+  
+  // Add null checks and fallbacks
+  const user = booking?.user || {};
+  const tour = booking?.tour || {};
+  const canCancel = booking?.status === 'pending' || booking?.status === 'paid';
 
   useEffect(() => {
     if (error) dispatch(setAlert({ type: 'error', msg: error }));
@@ -23,6 +26,11 @@ export default function ManageBookingItem({ booking }) {
     }
   }, [data, error, dispatch]);
 
+  // If booking is null/undefined, don't render anything
+  if (!booking) {
+    return null;
+  }
+
   return (
     <Fragment>
       {modal && (
@@ -30,7 +38,7 @@ export default function ManageBookingItem({ booking }) {
           heading="Cancel Booking"
           message={
             <>
-              Do you want to cancel this booking and refund <span>${booking.price}</span>?
+              Do you want to cancel this booking and refund <span>${booking.price || 0}</span>?
             </>
           }
           onProceed={() => cancelBooking({ userId: user._id, bookingId: booking._id })}
@@ -42,31 +50,43 @@ export default function ManageBookingItem({ booking }) {
 
       <div className="bookings-table-grid">
         <div className="table-img-item">
-          <img className="manage-user-img" src={user.photo} alt={user.name} />
+          <img 
+            className="manage-user-img" 
+            src={user.photo ? `/img/users/${user.photo}` : '/img/users/default.jpg'} 
+            alt={user.name || 'User'} 
+          />
           <div>
-            <h3>{user.name}</h3>
-            <p>Booked on {convertDate(booking.createdAt, true)}</p>
+            <h3>{user.name || 'Unknown User'}</h3>
+            <p>Booked on {booking.createdAt ? convertDate(booking.createdAt, true) : 'Unknown Date'}</p>
           </div>
         </div>
 
         <div className="table-img-item">
-          <img
-            className="manage-tour-img"
-            src={`/img/tours/${tour.imageCover}`}
-            alt={tour.name}
-          />
+          {tour.imageCover ? (
+            <img
+              className="manage-tour-img"
+              src={`/img/tours/${tour.imageCover}`}
+              alt={tour.name || 'Tour'}
+            />
+          ) : (
+            <div className="manage-tour-img placeholder-img">
+              <span>No Image</span>
+            </div>
+          )}
           <div>
-            <h3>{tour.name}</h3>
-            <p>{convertDate(booking.tourStartDate, true)}</p>
+            <h3>{tour.name || 'Unknown Tour'}</h3>
+            <p>{booking.tourStartDate ? convertDate(booking.tourStartDate, true) : 'Unknown Date'}</p>
           </div>
         </div>
 
         <div className="manage-booking-price">
-          <p>${booking.price}</p>
-          <p className={`manage-booking-status booking_${booking.status}`}>{booking.status}</p>
+          <p>${booking.price || 0}</p>
+          <p className={`manage-booking-status booking_${booking.status || 'unknown'}`}>
+            {booking.status || 'unknown'}
+          </p>
         </div>
 
-        {canCancel && (
+        {canCancel && user._id && booking._id && (
           <div className="actions">
             <button
               type="button"

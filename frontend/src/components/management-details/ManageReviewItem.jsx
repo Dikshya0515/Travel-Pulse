@@ -49,7 +49,7 @@ export default function ManageReviewItem({ reviewObj }) {
 
       <div className="reviews-table-grid">
         <div className="table-img-item">
-          <img className="manage-user-img" src={user.photo} alt={user.name} />
+          <img className="manage-user-img" src={`/img/users/${user.photo}`} alt={user.name} />
           <div>
             <h3>{user.name}</h3>
             <p>Reviewed on {convertDate(reviewObj.createdAt, true)}</p>

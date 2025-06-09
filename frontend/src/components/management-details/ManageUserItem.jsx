@@ -46,7 +46,7 @@ export default function ManageUserItem({ user }) {
           to={`/manage/users/profile/${user._id}`}
           className="table-img-item table-link-item"
         >
-          <img className="manage-user-img" src={user.photo} alt={user.name} />
+          <img className="manage-user-img" src={`/img/users/${user.photo}`} alt={user.name} />
           <div>
             <h3>{user.name}</h3>
             <p className="useritem-email">{user.email}</p>

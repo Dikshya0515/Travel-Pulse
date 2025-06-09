@@ -27,7 +27,8 @@
   }
 }
 .footer__logo img {
-  height: 3rem;
+  /* height: 3rem; */
+  height: 13.5rem;
 }
 .footer__nav {
   list-style: none;

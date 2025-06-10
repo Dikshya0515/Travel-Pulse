@@ -12,25 +12,34 @@ module.exports = class Email {
     this.to = user.email;
     this.firstName = user.name.split(" ")[0];
     this.url = url;
-    this.from = `Supratim Chanda <${process.env.EMAIL_FROM}>`;
+    this.from = `TravelPulse <${process.env.EMAIL_FROM}>`;
   }
 
   newTransport() {
     if (process.env.NODE_ENV === "production") {
-      // send grid or sendinblue or brevo (in production)
+      // Use Brevo for production
       return nodemailer.createTransport(
         new BrevoTransport({ apiKey: process.env.BREVO_API_KEY })
       );
     }
 
-    // MailTrap (in development)
+    // Check if SendGrid API key exists
+    if (!process.env.SENDGRID_API_KEY) {
+      throw new Error("SENDGRID_API_KEY is not set in environment variables");
+    }
+
+    // Use SendGrid for development
     return nodemailer.createTransport({
-      host: process.env.MAILTRAP_HOST,
-      port: process.env.MAILTRAP_PORT,
+      host: "smtp.sendgrid.net",
+      port: 587,
+      secure: false, // true for 465, false for other ports
       auth: {
-        user: process.env.MAILTRAP_USERNAME,
-        pass: process.env.MAILTRAP_PASSWORD,
+        user: "apikey", // This is literally the string "apikey"
+        pass: process.env.SENDGRID_API_KEY, // Your SendGrid API key
       },
+      // Add debug options
+      debug: true,
+      logger: true,
     });
   }
 
@@ -46,15 +55,27 @@ module.exports = class Email {
       html,
     };
 
-    // create transport and send email
-    await this.newTransport().sendMail(mailOptions);
+    try {
+      // create transport and send email
+      const transporter = this.newTransport();
+      
+      
+      const result = await transporter.sendMail(mailOptions);
+      // console.log("✅ Email sent successfully:", result.messageId);
+      return result;
+    } catch (error) {
+      console.error("❌ Email sending failed:", error);
+      throw error;
+    }
   }
 
   async sendWelcome() {
+    console.log(`🎉 Welcome email triggered for: ${this.to}`);
     await this.send(welcomeTemplate, "Welcome to TravelPulse family!");
   }
 
   async sendPasswordReset() {
+    console.log(`🔐 Password reset email triggered for: ${this.to}`);
     await this.send(
       passwordResetTemplate,
       "Your password reset token (valid for 10 mins)."
@@ -62,6 +83,7 @@ module.exports = class Email {
   }
 
   async sendVerificationCode() {
+    console.log(`✉️ Verification email triggered for: ${this.to}`);
     await this.send(
       verificationOtpTemplate,
       "Your email verification OTP (valid for 10 mins)."

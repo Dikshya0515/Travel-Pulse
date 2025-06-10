@@ -39,7 +39,7 @@ module.exports = (content, firstName, url) => `<!DOCTYPE html>
                 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                   <tbody>
                     <tr>
-                      <td class="content-block"><span class="apple-link">TravelPulse Inc, 123 Nowhere Road, San Francisco CA 99999</span><br> Don't like these emails? <a href="#">Unsubscribe</a></td>
+                      <td class="content-block"><span class="apple-link">TravelPulse Inc, 123 Nowhere Road, Up Above the Clouds9</span><br> Don't like these emails? <a href="#">Unsubscribe</a></td>
                     </tr>
                   </tbody>
                 </table>

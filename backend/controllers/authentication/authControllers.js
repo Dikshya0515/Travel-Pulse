@@ -1,6 +1,7 @@
 const User = require("../../models/userModel");
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
+const Email = require("../../utils/email"); // Add this import
 
 const {
   sendTokensAndCookies,
@@ -24,6 +25,16 @@ exports.signup = catchAsync(async (req, res) => {
     password,
     passwordConfirm,
   });
+
+  // Send welcome email after successful user creation
+  try {
+    const welcomeUrl = `${req.protocol}://${req.get('host')}/welcome`;
+    await new Email(user, welcomeUrl).sendWelcome();
+    console.log(`✅ Welcome email sent to: ${user.email}`);
+  } catch (emailError) {
+    console.error('❌ Failed to send welcome email:', emailError);
+    // Don't throw error - we don't want signup to fail if email fails
+  }
 
   sendTokensAndCookies(req, res, user, 201);
 });
@@ -69,12 +80,25 @@ exports.loginWithGoogle = async (req, res) => {
 
     // create or update user
     let user = await User.findOne({ email });
+    const isNewUser = !user; // Track if this is a new user
+    
     if (user) {
       user.set(body);
     } else {
       user = new User(body);
     }
     await user.save({ validateBeforeSave: false });
+
+    // Send welcome email for new Google users
+    if (isNewUser) {
+      try {
+        const welcomeUrl = `${req.protocol}://${req.get('host')}/welcome`;
+        await new Email(user, welcomeUrl).sendWelcome();
+        console.log(`✅ Welcome email sent to Google user: ${user.email}`);
+      } catch (emailError) {
+        console.error('❌ Failed to send welcome email to Google user:', emailError);
+      }
+    }
 
     deleteExpiredTokens(user);
     sendTokensAndCookies(req, res, user, 200, redirectUrl);

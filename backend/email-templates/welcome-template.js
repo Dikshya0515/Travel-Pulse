@@ -17,5 +17,5 @@ module.exports = (firstName, url) => `<!-- CONTENT-->
     </tr>
   </tbody>
 </table>
-<p>If you need any help with booking your next tour, please don't hesitate to contact me!</p>
-<p>- Supratim Chanda, Creator</p>`;
+<p>If you need any help with booking your next tour, please don't hesitate to contact us!</p>
+<p>- TravelPulse Family, Creator</p>`;

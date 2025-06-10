@@ -11,6 +11,8 @@ import { useCreateMyReviewMutation } from "../../redux/apis/bookingApi";
 import { setAlert } from "../../redux/slices/userSlice";
 import "./ReviewModal.css";
 
+import { getTourImageUrl } from "../../utils/imageUtils";
+
 export default function ReviewModal({
   bookingId,
   reviewObj,
@@ -84,7 +86,8 @@ export default function ReviewModal({
             <div className="review_tour_details">
               <img
                 className="review_tour_image"
-                src={tour.imageCover}
+                // src={tour.imageCover}
+                src={getTourImageUrl(tour.imageCover)}
                 alt={tour.name}
               />
               <div className="review_tour_description">

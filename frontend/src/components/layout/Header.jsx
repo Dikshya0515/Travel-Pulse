@@ -7,6 +7,8 @@ import { useLogoutMutation } from '../../redux/apis/authApi';
 import { setAlert } from '../../redux/slices/userSlice';
 import './Header.css';
 
+import { getUserImageUrl } from '../../utils/imageUtils';
+
 export default function Header() {
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -41,7 +43,8 @@ export default function Header() {
             </button>
             <Link to="/me/profile" className="nav__el">
               <img
-                src={`/img/users/${user.photo}`}
+                // src={`/img/users/${user.photo}`}
+                src={getUserImageUrl(user.photo)}
                 alt={user.name}
                 className="nav__user-img"
               />

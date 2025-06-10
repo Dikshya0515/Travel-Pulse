@@ -8,6 +8,8 @@ import { useUpdateMeMutation, useUpdateUserByIdMutation } from '../../redux/apis
 import { setAlert } from '../../redux/slices/userSlice';
 import './DetailsForm.css';
 
+import { getUserImageUrl } from '../../utils/imageUtils';
+
 export default function DetailsForm({ name, email, userPhone, photo, userId }) {
   const [formData, setFormData] = useState({
     email: '',
@@ -112,7 +114,7 @@ export default function DetailsForm({ name, email, userPhone, photo, userId }) {
       />
 
       <div className="form__group form__photo-upload">
-        <img className="form__user-photo" src={`/img/users/${photo}`} alt="User photo" />
+        <img className="form__user-photo" src={getUserImageUrl(photo)} alt="User photo" />
         <input
           className="form__upload"
           name="photo"

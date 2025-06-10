@@ -8,6 +8,8 @@ import Loader from "../ui/Loader";
 import { setAlert } from "../../redux/slices/userSlice";
 import "./TourReviewModalItem.css";
 
+import { getUserImageUrl } from "../../utils/imageUtils";
+
 export default function ReviewModalItem({ reviewObj, tourStartDate }) {
   const [readMore, setReadMore] = useState(false);
   const [like, setLike] = useState(false);
@@ -56,7 +58,7 @@ export default function ReviewModalItem({ reviewObj, tourStartDate }) {
   return (
     <Fragment>
       <div className="review-modal-item">
-        <img src={`/img/users/${user.photo}`} alt={user.name} className="item_user_photo" />
+        <img src={getUserImageUrl(user.photo)} alt={user.name} className="item_user_photo" />
         <div className="review-modal-user">
           <h3>{user.name}</h3>
           <p>Reviewed: {convertDate(createdAt)}</p>

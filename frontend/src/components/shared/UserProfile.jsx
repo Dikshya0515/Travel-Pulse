@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import IsVerified from '../user-details/IsVerified';
 import './UserProfile.css';
 
+import { getUserImageUrl } from '../../utils/imageUtils';
+
 export default function UserProfile({ user }) {
   const { user: loggedUser } = useSelector((state) => state.user);
 
@@ -13,7 +15,7 @@ export default function UserProfile({ user }) {
   return (
     <Fragment>
       <div className="user-header">
-        <img className="form__user-photo" src={`/img/users/${user.photo}`} alt="User photo" />
+        <img className="form__user-photo" src={getUserImageUrl(user.photo)} alt="User photo" />
         <div>
           <h2 className="heading-secondary">Profile</h2>{' '}
           <p className="user-role">{user.role}</p>

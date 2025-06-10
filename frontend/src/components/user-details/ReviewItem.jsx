@@ -10,6 +10,8 @@ import { setAlert } from "../../redux/slices/userSlice";
 import Modal from "../ui/Modal";
 import "./ReviewItem.css";
 
+import { getTourImageUrl } from "../../utils/imageUtils";
+
 export default function ReviewItem({ booking }) {
   const [reviewModal, setReviewModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -61,7 +63,7 @@ export default function ReviewItem({ booking }) {
 
       <div className="review_tour_details">
         <img
-          src={booking.tour.imageCover}
+          src={getTourImageUrl(booking.tour.imageCover)}
           alt={booking.tour.name}
           className="review_tour_image"
         />

@@ -10,6 +10,8 @@ import Actions from './Actions';
 import { setAlert } from '../../redux/slices/userSlice';
 import './ManageReviewItem.css';
 
+import { getUserImageUrl } from '../../utils/imageUtils';
+
 export default function ManageReviewItem({ reviewObj }) {
   const [modal, setModal] = useState(false);
   const [reviewModal, setReviewModal] = useState(false);
@@ -49,7 +51,7 @@ export default function ManageReviewItem({ reviewObj }) {
 
       <div className="reviews-table-grid">
         <div className="table-img-item">
-          <img className="manage-user-img" src={`/img/users/${user.photo}`} alt={user.name} />
+          <img className="manage-user-img" src={getUserImageUrl(user.photo)} alt={user.name} />
           <div>
             <h3>{user.name}</h3>
             <p>Reviewed on {convertDate(reviewObj.createdAt, true)}</p>

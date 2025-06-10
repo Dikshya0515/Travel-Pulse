@@ -9,6 +9,8 @@ import Modal from "../ui/Modal";
 import { setAlert } from "../../redux/slices/userSlice";
 import "./BookingItem.css";
 
+import { getTourImageUrl } from "../../utils/imageUtils";
+
 export default function BookingItem({ booking }) {
   const [modal, setModal] = useState(false);
   const [showMore, setShowMore] = useState(false);
@@ -56,7 +58,8 @@ export default function BookingItem({ booking }) {
 
       <div className="review_tour_details">
         <img
-          src={booking.tour.imageCover}
+          // src={booking.tour.imageCover}
+          src={getTourImageUrl(booking.tour.imageCover)}
           alt={booking.tour.name}
           className="review_tour_image"
         />

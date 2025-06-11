@@ -11,7 +11,7 @@
     "data:delete": "node seeder.js --delete",
     "debug": "ndb server.js"
   },
-  "author": "Supratim Chanda",
+  "author": "Dikshya Khadka",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

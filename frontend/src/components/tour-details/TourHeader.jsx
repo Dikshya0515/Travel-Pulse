@@ -1,5 +1,7 @@
 import "./TourHeader.css";
 
+import { getTourImageUrl } from "../../utils/imageUtils";
+
 export default function TourHeader({
   imageCover,
   name,
@@ -11,7 +13,7 @@ export default function TourHeader({
       <div className="header__hero">
         <div className="header__hero-overlay">&nbsp;</div>
         {/* <img src={imageCover} alt={name} className="header__hero-img" /> */}
-        <img src={`/img/tours/${imageCover}`} alt={name} className="header__hero-img" />
+        <img src={imageCover ? getTourImageUrl(imageCover) : '/img/users/default.jpg'} alt={name} className="header__hero-img" />
       </div>
       <div className="heading-box">
         <h1 className="heading-primary">

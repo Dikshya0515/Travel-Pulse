@@ -9,6 +9,8 @@ import { useDeleteTourMutation } from '../../redux/apis/tourApi';
 import { setAlert } from '../../redux/slices/userSlice';
 import './ManageTourItem.css';
 
+import { getTourImageUrl } from '../../utils/imageUtils';
+
 export default function ManageTourItem({ tour }) {
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
@@ -45,7 +47,8 @@ export default function ManageTourItem({ tour }) {
         <Link to={`/tours/${tour._id}`} className="table-img-item table-link-item">
           <img
             className="manage-tour-img"
-            src={`/img/tours/${tour.imageCover}`}
+            // src={`/img/tours/${tour.imageCover}`}
+            src={tour.imageCover ? getTourImageUrl(tour.imageCover) : '/img/tours/default.jpg'}
             alt={tour.name}
           />
           <div>

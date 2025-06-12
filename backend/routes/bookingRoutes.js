@@ -8,6 +8,14 @@ const router = express.Router();
 
 router.use("/:bookingId/review", reviewRouter); //* review related to booking *//
 
+// Add webhook route BEFORE the auth middleware
+// This must come before router.use(authMiddlewares.protect) since webhooks don't need auth
+router.post(
+  "/webhook-checkout",
+  express.raw({ type: 'application/json' }), // Important: raw body parser for Stripe webhooks
+  bookingControllers.webhookCheckout
+);
+
 router.use(authMiddlewares.protect); //* Protect *//
 
 // Bookings - create checkout session

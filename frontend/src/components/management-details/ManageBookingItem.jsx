@@ -7,6 +7,8 @@ import { useCancelBookingByIdMutation } from '../../redux/apis/bookingApi';
 import { setAlert } from '../../redux/slices/userSlice';
 import './ManageBookingItem.css';
 
+import { getUserImageUrl } from '../../utils/imageUtils';
+
 export default function ManageBookingItem({ booking }) {
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
@@ -52,7 +54,7 @@ export default function ManageBookingItem({ booking }) {
         <div className="table-img-item">
           <img 
             className="manage-user-img" 
-            src={user.photo ? `/img/users/${user.photo}` : '/img/users/default.jpg'} 
+            src={user.photo ? getUserImageUrl(user.photo) : '/img/users/default.jpg'} 
             alt={user.name || 'User'} 
           />
           <div>

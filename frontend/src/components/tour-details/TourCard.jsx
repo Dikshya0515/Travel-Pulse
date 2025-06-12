@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { convertDate } from "../../utils/date";
 import "./TourCard.css";
 
+import { getTourImageUrl } from "../../utils/imageUtils";
+
 export default function TourCard({ tour }) {
   return (
     <div className="card">
@@ -16,7 +18,8 @@ export default function TourCard({ tour }) {
           <div className="card__picture-overlay">&nbsp;</div>
           <img
             // src={tour.imageCover}
-            src={`/img/tours/${tour.imageCover}`}
+            // src={`/img/tours/${tour.imageCover}`}
+            src={tour.imageCover ? getTourImageUrl(tour.imageCover) : '/img/tours/default.jpg'}
             alt={tour.name}
             className="card__picture-img"
           />

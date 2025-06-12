@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const User = require("../models/userModel");
 const Booking = require("../models/bookingModel");
@@ -138,36 +139,112 @@ exports.filterObj = (obj, allowedFields) => {
 //* create booking checkout ****************************************
 
 exports.createBookingCheckout = async (session) => {
-  const data = session.lines.data[0];
-  const tour = await Tour.findOne({ name: data.description });
-  const user = (await User.findOne({ email: session.customer_email }))._id;
-  const price = session.amount_paid / 100;
-  const tickets = data.quantity;
-  const { tourStartDate } = session.metadata;
-  const receipt = session.hosted_invoice_url;
-  const { payment_intent } = session;
+  try {
+    console.log('Processing booking checkout for session:', session.id);
+    console.log('Session type:', session.object);
+    console.log('Session status:', session.status || session.payment_status);
 
-  let status;
-  if (session.status === "paid") {
-    status = "paid";
-  } else {
-    status = "pending";
+    // Only process checkout.session.completed events
+    if (session.object !== 'checkout.session') {
+      console.log('Skipping non-checkout session object:', session.object);
+      return;
+    }
+
+    // Check if booking already exists for this checkout session
+    const existingBooking = await Booking.findOne({ 
+      stripe_session_id: session.id 
+    });
+    
+    if (existingBooking) {
+      console.log('Booking already exists for checkout session:', session.id);
+      return existingBooking;
+    }
+
+    // Retrieve line items from the session
+    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
+      expand: ['data.price.product']
+    });
+    
+    if (!lineItems.data || lineItems.data.length === 0) {
+      throw new Error('No line items found in checkout session');
+    }
+
+    const lineItem = lineItems.data[0];
+    
+    // Extract data from session
+    const tourId = session.client_reference_id || session.metadata?.tourId;
+    const userId = session.metadata?.userId;
+    const tourStartDate = session.metadata?.tourStartDate;
+    const tickets = parseInt(session.metadata?.tickets) || lineItem.quantity;
+    
+    if (!tourId || !userId || !tourStartDate) {
+      throw new Error(`Missing required data: tourId=${tourId}, userId=${userId}, tourStartDate=${tourStartDate}`);
+    }
+
+    // Find the tour and user
+    const tour = await Tour.findById(tourId);
+    if (!tour) {
+      throw new Error(`Tour not found with ID: ${tourId}`);
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error(`User not found with ID: ${userId}`);
+    }
+
+    const price = session.amount_total / 100;
+    const receipt = session.receipt_url;
+    const payment_intent = session.payment_intent;
+    const status = session.payment_status === 'paid' ? 'paid' : 'pending';
+
+    console.log('Creating booking with data:', {
+      tour: tour._id,
+      user: user._id,
+      price,
+      tickets,
+      tourStartDate,
+      status,
+      stripe_session_id: session.id
+    });
+
+    // Create booking data
+    const bookingData = {
+      tour: tour._id,
+      user: user._id,
+      price,
+      tickets,
+      tourStartDate: new Date(tourStartDate),
+      receipt,
+      status,
+      stripe_session_id: session.id, // Add this to prevent duplicates
+    };
+
+    // Only add payment_intent if it exists
+    if (payment_intent) {
+      bookingData.payment_intent = payment_intent;
+    }
+
+    // Create the booking
+    const booking = await Booking.create(bookingData);
+
+    // Update tour participants
+    const dateObj = tour.startDates.find(
+      (el) => el.dateValue.getTime() === new Date(tourStartDate).getTime()
+    );
+    
+    if (dateObj) {
+      dateObj.participants += tickets;
+      await tour.save();
+      console.log(`Updated tour participants: +${tickets} for date ${tourStartDate}`);
+    } else {
+      console.error('Date not found in tour.startDates for:', tourStartDate);
+    }
+
+    console.log('Booking created successfully:', booking._id);
+    return booking;
+
+  } catch (error) {
+    console.error('Error in createBookingCheckout:', error);
+    throw error;
   }
-
-  const booking = await Booking.create({
-    tour: tour._id,
-    user,
-    price,
-    tickets,
-    tourStartDate,
-    receipt,
-    status,
-    payment_intent,
-  });
-
-  tour.startDates.find(
-    (el) => el.dateValue.getTime() === booking.tourStartDate.getTime()
-  ).participants = tickets;
-
-  await tour.save();
 };

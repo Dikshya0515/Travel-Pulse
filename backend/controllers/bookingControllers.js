@@ -15,6 +15,12 @@ exports.createCheckoutSession = catchAsync(async (req, res, next) => {
   const { date, tickets } = req.body;
   const { tourId } = req.params;
 
+  // Add debugging logs
+  console.log('Received date:', date);
+  console.log('Date type:', typeof date);
+  console.log('Is valid date:', !isNaN(new Date(date)));
+  console.log('Parsed date:', new Date(date));
+
   if (!date) {
     return next(new AppError("Please choose a date to book tickets!", 400));
   }
@@ -48,13 +54,20 @@ exports.createCheckoutSession = catchAsync(async (req, res, next) => {
     ? tour.price - tour.priceDiscount
     : tour.price;
 
-  // create checkout session
+  // Create checkout session
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     success_url: `${process.env.FRONTEND_URL}/me/bookings?status=success`,
     cancel_url: `${process.env.FRONTEND_URL}/tours/${tour._id}?status=failed`,
     mode: "payment",
     customer_email: req.user.email,
+    client_reference_id: tourId,
+    metadata: {
+      tourStartDate: date,
+      tourId: tourId,
+      userId: req.user._id.toString(), // Add userId to metadata
+      tickets: tickets.toString() // Add tickets to metadata
+    },
     line_items: [
       {
         quantity: tickets,
@@ -64,7 +77,7 @@ exports.createCheckoutSession = catchAsync(async (req, res, next) => {
           product_data: {
             name: `${tour.name}`,
             description: tour.summary,
-            images: [tour.imageCover], // Need images that are already in internet
+            images: [tour.imageCover],
           },
         },
       },
@@ -74,6 +87,9 @@ exports.createCheckoutSession = catchAsync(async (req, res, next) => {
       invoice_data: {
         metadata: {
           tourStartDate: date,
+          tourId: tourId,
+          userId: req.user._id.toString(),
+          tickets: tickets.toString()
         },
       },
     },
@@ -88,6 +104,11 @@ exports.createCheckoutSession = catchAsync(async (req, res, next) => {
 exports.webhookCheckout = catchAsync(async (req, res, next) => {
   const signature = req.headers["stripe-signature"];
 
+  if (!signature) {
+    console.error('No Stripe signature found in headers');
+    return res.status(400).send('No signature provided');
+  }
+
   let event;
   try {
     event = stripe.webhooks.constructEvent(
@@ -96,11 +117,29 @@ exports.webhookCheckout = catchAsync(async (req, res, next) => {
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (err) {
+    console.error('Webhook signature verification failed:', err.message);
     return res.status(400).send(`Webhook error: ${err.message}`);
   }
 
-  if (event.type === "invoice.payment_succeeded") {
-    createBookingCheckout(event.data.object);
+  console.log('Webhook event received:', event.type);
+
+  // Handle the event
+  try {
+    switch (event.type) {
+      case 'checkout.session.completed':
+        console.log('Processing checkout.session.completed');
+        await createBookingCheckout(event.data.object);
+        break;
+      case 'payment_intent.succeeded':
+        console.log('Payment intent succeeded:', event.data.object.id);
+        // Don't create booking here, let checkout.session.completed handle it
+        break;
+      default:
+        console.log(`Unhandled event type: ${event.type}`);
+    }
+  } catch (error) {
+    console.error('Error processing webhook:', error);
+    return res.status(500).send('Webhook processing failed');
   }
 
   res.status(200).json({ received: true });

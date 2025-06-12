@@ -24,6 +24,9 @@ require("./controllers/authentication/passport");
 
 const app = express();
 
+// WEBHOOK ROUTE MUST COME BEFORE express.json()
+// app.use('/api/v2/booking/webhook-checkout', express.raw({ type: 'application/json' }));
+
 //* Middlewares ****************************************************
 
 // Implement cors

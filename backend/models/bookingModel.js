@@ -33,8 +33,13 @@ const bookingSchema = new mongoose.Schema(
     receipt: String,
     payment_intent: {
       type: String,
-      required: [true, "Payment intent required"],
+      // Remove required validation since some webhook events might not have it
       select: false,
+    },
+    stripe_session_id: {
+      type: String,
+      unique: true, // Prevent duplicate bookings from same session
+      sparse: true, // Allow null values but ensure uniqueness when present
     },
     refund: String,
     status: {
@@ -51,6 +56,11 @@ const bookingSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+//* Indexes ********************************************************
+
+// Create compound index to prevent duplicate bookings
+bookingSchema.index({ tour: 1, user: 1, tourStartDate: 1 }, { unique: true });
 
 //* Virtuals *******************************************************
 

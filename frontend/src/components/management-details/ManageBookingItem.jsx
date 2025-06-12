@@ -7,7 +7,7 @@ import { useCancelBookingByIdMutation } from '../../redux/apis/bookingApi';
 import { setAlert } from '../../redux/slices/userSlice';
 import './ManageBookingItem.css';
 
-import { getUserImageUrl } from '../../utils/imageUtils';
+import { getUserImageUrl, getTourImageUrl } from '../../utils/imageUtils';
 
 export default function ManageBookingItem({ booking }) {
   const [modal, setModal] = useState(false);
@@ -67,7 +67,8 @@ export default function ManageBookingItem({ booking }) {
           {tour.imageCover ? (
             <img
               className="manage-tour-img"
-              src={`/img/tours/${tour.imageCover}`}
+              // src={`/img/tours/${tour.imageCover}`}
+              src={tour.imageCover ? getTourImageUrl(tour.imageCover) : '/img/tours/default.jpg'}
               alt={tour.name || 'Tour'}
             />
           ) : (

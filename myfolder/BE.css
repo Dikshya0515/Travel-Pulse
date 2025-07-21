@@ -1,0 +1,55 @@
+using Microsoft.AspNetCore.Mvc;
+
+[ApiController]
+[Route("api/[controller]")]
+public class PaymentController : ControllerBase
+{
+    // Fake wallet data (username -> balance)
+    private static Dictionary<string, decimal> wallet = new Dictionary<string, decimal>
+    {
+        { "sabina01", 1800 },
+        { "ram123", 500 }
+    };
+
+    // Fake route fares (route -> base fare)
+    private static Dictionary<string, decimal> fares = new Dictionary<string, decimal>
+    {
+        { "Kathmandu-Pokhara", 1200 },
+        { "Kathmandu-Chitwan", 800 }
+    };
+
+    [HttpPost("pay")]
+    public IActionResult Pay([FromBody] PaymentRequest request)
+    {
+        if (!wallet.ContainsKey(request.Username))
+            return BadRequest("❌ User not found!");
+
+        if (!fares.ContainsKey(request.Route))
+            return BadRequest("❌ Route not found!");
+
+        decimal fare = fares[request.Route];
+        if (request.IsStudent)
+        {
+            fare *= 0.8m; // 20% student discount
+        }
+
+        if (wallet[request.Username] < fare)
+            return BadRequest($"❌ Insufficient balance! Required: NPR {fare}, Available: NPR {wallet[request.Username]}");
+
+        wallet[request.Username] -= fare;
+
+        return Ok(new
+        {
+            Message = "✅ Payment Successful!",
+            PaidAmount = fare,
+            RemainingBalance = wallet[request.Username]
+        });
+    }
+}
+
+public class PaymentRequest
+{
+    public string Username { get; set; }
+    public string Route { get; set; }
+    public bool IsStudent { get; set; }
+}

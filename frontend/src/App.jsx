@@ -28,6 +28,7 @@ import ManageBookings from "./pages/management/ManageBookings";
 import ManageTours from "./pages/management/ManageTours";
 import CreateTour from "./pages/management/CreateTour";
 import EditTour from "./pages/management/EditTour";
+import TravelAssistantChat from './components/ai/TravelAssistantChat';
 
 export default function App() {
   const router = createBrowserRouter([
@@ -212,5 +213,10 @@ export default function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <TravelAssistantChat />
+    </>
+  );
 }

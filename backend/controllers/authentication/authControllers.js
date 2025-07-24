@@ -36,6 +36,7 @@ exports.signup = catchAsync(async (req, res) => {
     // Don't throw error - we don't want signup to fail if email fails
   }
 
+  
   sendTokensAndCookies(req, res, user, 201);
 });
 

@@ -14,6 +14,8 @@ exports.aliasTopTour = (req, res, next) => {
 
 exports.parseData = (req, res, next) => {
   req.body.startLocation = JSON.parse(req.body.startLocation);
+  exports.parseData = (req, res, next) => {
+  req.body.startLocation = JSON.parse(req.body.startLocation)
 
   if (typeof req.body.locations === "string") {
     req.body.locations = [JSON.parse(req.body.locations)];

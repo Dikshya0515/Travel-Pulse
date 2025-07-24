@@ -22,6 +22,7 @@ exports.enable2FA = catchAsync(async (req, res, next) => {
   
   user.twoFactorSecret = secret;
   await user.save({ validateBeforeSave: false });
+  
 
   // Use user's email instead of req.params.id
   const serviceLabel = "TravelPulse";

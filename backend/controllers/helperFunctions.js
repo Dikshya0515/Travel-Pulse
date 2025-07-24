@@ -242,6 +242,7 @@ exports.createBookingCheckout = async (session) => {
 
     console.log('Booking created successfully:', booking._id);
     return booking;
+    
 
   } catch (error) {
     console.error('Error in createBookingCheckout:', error);

@@ -118,7 +118,6 @@ exports.getGuides = catchAsync(async (req, res, next) => {
 //* Using Factory Handler ******************************************
 
 exports.getAllUsers = factory.getAll(User);
-exports.getAllUsers = factory.getAll(User);
 exports.getUserById = factory.getById(User);
 exports.updateUserById = factory.updateById(User, [
   "name",

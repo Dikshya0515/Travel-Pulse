@@ -90,7 +90,7 @@ function TourCardRenderer({ tours }) {
   );
 }
 
-// Renders AI messages with proper formatting and no stray asterisks
+// Renders AI messages with visually distinct section titles and content
 function MessageRenderer({ text }) {
   // Clean up text and split into blocks
   let cleanText = text.trim().replace(/^[-]+|[-]+$/g, '').trim();
@@ -125,36 +125,20 @@ function MessageRenderer({ text }) {
     );
   }
 
-  // Otherwise, fallback to markdown-like rendering
+  // Otherwise, render plain, visually distinct sections for titles and content
   const lines = text.split(/\r?\n/);
   const urlRegex = /(https?:\/\/[^\s)]+)/g;
-  const tourNameRegex = /^\s*(\d+\.|[-*])?\s*([A-Z][A-Za-z0-9\s\-']{3,}):/;
+  const titleRegex = /^(Name|Description|Price|URL|Location|Difficulty|Duration):\s*(.*)$/i;
 
   return (
     <div className="ai-message-rendered">
       {lines.map((line, idx) => {
-        // Render lists
-        if (/^\s*[-*]\s+/.test(line)) {
+        const titleMatch = line.match(titleRegex);
+        if (titleMatch) {
           return (
-            <li key={idx} className="ai-message-list-item">
-              {renderLine(line.replace(/^\s*[-*]\s+/, ''))}
-            </li>
-          );
-        }
-        // Render numbered lists
-        if (/^\s*\d+\.\s+/.test(line)) {
-          return (
-            <li key={idx} className="ai-message-list-item">
-              {renderLine(line.replace(/^\s*\d+\.\s+/, ''))}
-            </li>
-          );
-        }
-        // Render tour name as bold if matches
-        const nameMatch = line.match(tourNameRegex);
-        if (nameMatch) {
-          return (
-            <div key={idx} className="ai-message-tour-name">
-              <strong>{nameMatch[2]}</strong>{line.slice(nameMatch[0].length - 1)}
+            <div key={idx} className="ai-message-section">
+              <span className="ai-message-section-title">{titleMatch[1]}:</span>
+              <span className="ai-message-section-content"> {renderLine(titleMatch[2])}</span>
             </div>
           );
         }
@@ -199,7 +183,7 @@ function MessageRenderer({ text }) {
 const TravelAssistantChat = () => {
   // State for chat messages, input, loading, error, and widget visibility
   const [messages, setMessages] = useState([
-    { sender: 'ai', text: '👋 <b>Welcome to the Premium AI Travel Assistant!</b>\n\nHow can I help you plan your next adventure today?' }
+    { sender: 'ai', text: 'Welcome to the AI Travel Assistant!\n\nHow can I help you plan your next adventure today?' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -296,9 +280,9 @@ const TravelAssistantChat = () => {
 
   // Renders the chat popup
   const renderChatPopup = () => (
-    <div className="ai-chat-widget premium">
+    <div className="ai-chat-widget">
       <div className="ai-chat-header">
-        <span>Premium AI Travel Assistant</span>
+        <span>AI Travel Assistant</span>
         <button className="ai-chat-close" aria-label="Close" onClick={() => setIsOpen(false)}>
           <svg className="ai-chat-close-icon">
             <use xlinkHref="/img/icons.svg#icon-x" />

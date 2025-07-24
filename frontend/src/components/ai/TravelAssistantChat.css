@@ -1,26 +1,47 @@
 .ai-chat-widget {
   position: fixed;
-  bottom: 32px;
   right: 32px;
-  width: 340px;
-  max-height: 500px;
+  bottom: 32px;
+  width: 360px;
+  max-height: 600px;
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(46,139,87,0.18);
   display: flex;
   flex-direction: column;
-  z-index: 1000;
+  z-index: 1200;
   font-family: 'Segoe UI', Arial, sans-serif;
+  animation: fadeIn 0.3s;
 }
 
 .ai-chat-header {
   background: #2e8b57;
   color: #fff;
-  padding: 16px;
-  border-radius: 16px 16px 0 0;
+  padding: 18px 18px 18px 24px;
+  border-radius: 18px 18px 0 0;
   font-weight: bold;
-  font-size: 1.1rem;
-  text-align: center;
+  font-size: 1.18rem;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ai-chat-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 2px;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.ai-chat-close-icon {
+  width: 22px;
+  height: 22px;
+  fill: #fff;
+  display: block;
 }
 
 .ai-chat-messages {
@@ -243,7 +264,7 @@
 
 .ai-chat-fab {
   position: fixed;
-  left: 32px;
+  right: 32px;
   bottom: 32px;
   z-index: 1100;
   background: #2e8b57;
@@ -279,48 +300,25 @@
   letter-spacing: 0.01em;
 }
 
-.ai-chat-widget.premium {
-  position: fixed;
-  left: 32px;
-  bottom: 32px;
-  width: 360px;
-  max-height: 600px;
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 8px 32px rgba(46,139,87,0.18);
+/* Sectioned message rendering for professional look */
+.ai-message-section {
+  margin: 8px 0 2px 0;
   display: flex;
-  flex-direction: column;
-  z-index: 1200;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  animation: fadeIn 0.3s;
+  align-items: flex-start;
+  gap: 8px;
 }
 
-.ai-chat-header {
-  background: #2e8b57;
-  color: #fff;
-  padding: 18px 18px 18px 24px;
-  border-radius: 18px 18px 0 0;
-  font-weight: bold;
-  font-size: 1.18rem;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.ai-message-section-title {
+  font-weight: 700;
+  color: #256b45;
+  font-size: 1.04rem;
+  min-width: 90px;
+  display: inline-block;
 }
 
-.ai-chat-close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0 2px;
-  margin-left: 10px;
-  display: flex;
-  align-items: center;
-}
-
-.ai-chat-close-icon {
-  width: 22px;
-  height: 22px;
-  fill: #fff;
-  display: block;
+.ai-message-section-content {
+  color: #234;
+  font-size: 1.01rem;
+  flex: 1;
+  display: inline-block;
 } 

@@ -17,6 +17,7 @@ const resuseDetection = async (refreshToken, next) => {
   } catch (error) {
     return next(new AppError("Invalid token!", 401));
   }
+  
 
   // Find hacked user and remove all refresh tokens
   const hackedUser = await User.findById(decodedToken?.id);

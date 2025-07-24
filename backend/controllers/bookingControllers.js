@@ -34,6 +34,7 @@ exports.createCheckoutSession = catchAsync(async (req, res, next) => {
   if (booking?.status === "pending" || booking?.status === "paid") {
     return next(new AppError("User can book only once per tour date!", 400));
   }
+  
 
   // Check if tickets are available or not
   const tour = await Tour.findById(tourId);

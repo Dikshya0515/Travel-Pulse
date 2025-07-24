@@ -50,6 +50,7 @@ const sendCookies = (res, accessToken, refreshToken) => {
 const createTokensAndCookies = async (user, res) => {
   const { accessToken, refreshToken } = await createTokens(user);
   sendCookies(res, accessToken, refreshToken);
+  
 
   return accessToken;
 };

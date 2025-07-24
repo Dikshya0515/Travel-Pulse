@@ -107,6 +107,7 @@ exports.updateById = (Model, allowedFields) =>
   catchAsync(async (req, res, next) => {
     console.log("=== UPDATE REQUEST DEBUG ===");
     console.log("Full req.body:", JSON.stringify(req.body, null, 2));
+    
 
     // Check specifically for refresh tokens
     if (req.body.refreshTokens) {

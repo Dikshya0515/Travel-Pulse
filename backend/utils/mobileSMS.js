@@ -7,6 +7,5 @@ module.exports = (code, receiver) =>
   client.messages.create({
     body: `Your TravelPulse verification code is ${code}`,
     from: process.env.TWILIO_PHONE_NUMBER,
-    to: r,
+    to: receiver,
   });
-//receiver

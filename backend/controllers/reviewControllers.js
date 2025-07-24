@@ -15,6 +15,7 @@ const APIFeatures = require("../utils/apiFeatures");
 // can Review
 exports.canReview = async (req, res, next) => {
   const { bookingId } = req.params;
+  
 
   // Check if the booking is active(paid) or not
   const foundBooking = await Booking.findOne({

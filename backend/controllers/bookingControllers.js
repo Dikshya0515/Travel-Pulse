@@ -242,7 +242,7 @@ exports.cancelBookingById = catchAsync(async (req, res, next) => {
   const booking = await Booking.findOne({
     _id: req.params.bookingId,
     user: req.body.userId,
-  });
+  }).select("+payment_intent");
   if (!booking) {
     return next(new AppError("Booking not found!", 404));
   }

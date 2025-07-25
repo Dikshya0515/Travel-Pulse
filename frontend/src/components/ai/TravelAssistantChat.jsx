@@ -1,20 +1,26 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useFetchAllToursQuery } from '../../redux/apis/tourApi';
 import './TravelAssistantChat.css';
+import ReactMarkdown from 'react-markdown';
 
+// OpenAI API configuration
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
+// System prompt for the AI assistant
 const SYSTEM_PROMPT = `You are a helpful travel assistant. The user will tell you what kind of tour they are interested in. You will be given a list of available tours (with name, description, url, price, duration, and other details). Suggest the best 2-3 itineraries for the user, explaining why you chose them, and include the tour name, a short description, and the URL for each. If none are a good fit, say so. Format your response with clear tour names, short descriptions, and clickable URLs. Use a consistent format for each tour: Name, Description, Price, URL. Use markdown for links if you want.`;
 
+// Helper to generate a tour URL
 function getTourUrl(tour) {
   return `${window.location.origin}/tours/${tour._id}`;
 }
 
+// Helper to format tours for the LLM prompt
 function formatToursForLLM(tours) {
   return tours.map(t => `Name: ${t.name}\nDescription: ${t.summary || t.description}\nDifficulty: ${t.difficulty}\nDuration: ${t.duration} days\nPrice: $${t.price}\nLocation: ${t.startLocation?.description}\nURL: ${getTourUrl(t)}`).join('\n---\n');
 }
 
+// Fallback UI if AI can't suggest tours
 const FallbackTourList = ({ tours }) => (
   <div className="ai-fallback-list">
     <div>Here are some tours you can explore manually:</div>
@@ -28,7 +34,7 @@ const FallbackTourList = ({ tours }) => (
   </div>
 );
 
-// --- Casual query detection ---
+// Detects casual greetings and simple queries
 function isCasualQuery(text) {
   const casualPatterns = [
     /^\s*hi\s*$/i,
@@ -50,6 +56,7 @@ function isCasualQuery(text) {
   return casualPatterns.some((re) => re.test(text));
 }
 
+// Returns a friendly response for casual queries
 function getCasualResponse(text) {
   const t = text.trim().toLowerCase();
   if (/^hi$|^hello$|^hey$|^yo$/.test(t)) return "Hello! 👋 How can I help you plan your next adventure?";
@@ -64,7 +71,7 @@ function getCasualResponse(text) {
   return "How can I help you with your travel plans?";
 }
 
-// --- TourCardRenderer: renders tour suggestions as cards ---
+// Renders tour suggestions as attractive cards
 function TourCardRenderer({ tours }) {
   return (
     <div className="ai-tour-cards">
@@ -84,139 +91,29 @@ function TourCardRenderer({ tours }) {
   );
 }
 
-// --- MessageRenderer: formats AI response attractively ---
-function MessageRenderer({ text }) {
-  // Remove leading/trailing ---
-  let cleanText = text.trim().replace(/^[-]+|[-]+$/g, '').trim();
 
-  // Split into blocks by double newlines or by markdown link pattern
-  let blocks = cleanText.split(/\n\s*\n/).filter(Boolean);
-
-  // Try to extract tours from markdown or plain formats
-  const tours = [];
-  let summary = '';
-  for (let block of blocks) {
-    // Remove asterisks and extra whitespace
-    block = block.replace(/\*\*/g, '').replace(/^\*+|\*+$/g, '').trim();
-    // Try markdown link
-    const urlMatch = block.match(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/);
-    // Try plain URL
-    const urlPlainMatch = block.match(/URL:\s*(https?:\/\/[^\s)]+)/i);
-    // Name
-    let name = block.match(/^(?:Name:)?\s*([A-Z][A-Za-z0-9\s\-']{3,})/i)?.[1]?.trim();
-    // Description
-    let description = block.match(/Description:\s*([\s\S]*?)(?=Price:|URL:|\[|$)/i)?.[1]?.replace(/\*\*/g, '').trim();
-    // Price
-    let price = block.match(/Price:\s*\$?(\d+[\d,.]*)/i)?.[1]?.trim();
-    // URL
-    let url = urlMatch ? urlMatch[2] : (urlPlainMatch ? urlPlainMatch[1] : null);
-    // If block contains a tour
-    if (name && url) {
-      tours.push({ name, description, price, url });
-    } else if (block && !block.toLowerCase().startsWith('name:')) {
-      // If not a tour, treat as summary/conclusion
-      summary += block + '\n\n';
-    }
-  }
-  summary = summary.trim();
-
-  // If we have at least one valid tour, render as cards with summary below
-  if (tours.length > 0) {
-    return (
-      <>
-        <TourCardRenderer tours={tours} />
-        {summary && <div className="ai-message-summary">{summary}</div>}
-      </>
-    );
-  }
-
-  // Otherwise, fallback to markdown-like rendering
-  const lines = text.split(/\r?\n/);
-  const urlRegex = /(https?:\/\/[^\s)]+)/g;
-  const tourNameRegex = /^\s*(\d+\.|[-*])?\s*([A-Z][A-Za-z0-9\s\-']{3,}):/;
-
-  return (
-    <div className="ai-message-rendered">
-      {lines.map((line, idx) => {
-        // Render lists
-        if (/^\s*[-*]\s+/.test(line)) {
-          return (
-            <li key={idx} className="ai-message-list-item">
-              {renderLine(line.replace(/^\s*[-*]\s+/, ''))}
-            </li>
-          );
-        }
-        // Render numbered lists
-        if (/^\s*\d+\.\s+/.test(line)) {
-          return (
-            <li key={idx} className="ai-message-list-item">
-              {renderLine(line.replace(/^\s*\d+\.\s+/, ''))}
-            </li>
-          );
-        }
-        // Render tour name as bold if matches
-        const nameMatch = line.match(tourNameRegex);
-        if (nameMatch) {
-          return (
-            <div key={idx} className="ai-message-tour-name">
-              <strong>{nameMatch[2]}</strong>{line.slice(nameMatch[0].length - 1)}
-            </div>
-          );
-        }
-        // Render normal line
-        return <div key={idx}>{renderLine(line)}</div>;
-      })}
-    </div>
-  );
-
-  // Helper to render URLs as clickable links
-  function renderLine(line) {
-    const parts = [];
-    let lastIdx = 0;
-    let match;
-    let idx = 0;
-    while ((match = urlRegex.exec(line)) !== null) {
-      if (match.index > lastIdx) {
-        parts.push(line.slice(lastIdx, match.index));
-      }
-      parts.push(
-        <a
-          key={`url-${idx}`}
-          href={match[0]}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ai-message-link"
-        >
-          {match[0]}
-        </a>
-      );
-      lastIdx = match.index + match[0].length;
-      idx++;
-    }
-    if (lastIdx < line.length) {
-      parts.push(line.slice(lastIdx));
-    }
-    return parts;
-  }
-}
-
+// Main AI Assistant widget with floating button and popup
 const TravelAssistantChat = () => {
+  // State for chat messages, input, loading, error, and widget visibility
   const [messages, setMessages] = useState([
-    { sender: 'ai', text: 'Hi! I am your AI Travel Assistant. What type of tour are you interested in?' }
+    { sender: 'ai', text: 'Welcome to the AI Travel Assistant!\n\nHow can I help you plan your next adventure today?' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showFallback, setShowFallback] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // Controls popup visibility
   const messagesEndRef = useRef(null);
 
-  // Fetch all tours once user asks a question
+  // Fetch all tours for suggestions
   const { data: toursData, isLoading: toursLoading, error: toursError } = useFetchAllToursQuery();
 
+  // Scroll to bottom on new message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, loading]);
+  }, [messages, loading, isOpen]);
 
+  // Handles sending a user message
   const handleSend = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -280,13 +177,35 @@ const TravelAssistantChat = () => {
     }
   };
 
-  return (
+  // Renders the floating chat icon button
+  const renderChatButton = () => (
+    <button
+      className="ai-chat-fab"
+      aria-label="Open AI Assistant"
+      onClick={() => setIsOpen(true)}
+    >
+      <svg className="ai-chat-fab-icon">
+        <use xlinkHref="/img/icons.svg#icon-message-circle" />
+      </svg>
+      <span className="ai-chat-fab-label">AI Assistant</span>
+    </button>
+  );
+
+  // Renders the chat popup
+  const renderChatPopup = () => (
     <div className="ai-chat-widget">
-      <div className="ai-chat-header">AI Travel Assistant</div>
+      <div className="ai-chat-header">
+        <span>AI Travel Assistant</span>
+        <button className="ai-chat-close" aria-label="Close" onClick={() => setIsOpen(false)}>
+          <svg className="ai-chat-close-icon">
+            <use xlinkHref="/img/icons.svg#icon-x" />
+          </svg>
+        </button>
+      </div>
       <div className="ai-chat-messages">
         {messages.map((msg, idx) => (
           <div key={idx} className={`ai-chat-message ${msg.sender}`}>
-            {msg.sender === 'ai' ? <MessageRenderer text={msg.text} /> : msg.text}
+            {msg.sender === 'ai' ? <ReactMarkdown>{msg.text}</ReactMarkdown>  : msg.text}
           </div>
         ))}
         {loading && <div className="ai-chat-message ai">Thinking...</div>}
@@ -307,6 +226,14 @@ const TravelAssistantChat = () => {
       </form>
       {error && <div className="ai-chat-error">{error}</div>}
     </div>
+  );
+
+  // Render only the floating button if minimized, otherwise show the popup
+  return (
+    <>
+      {!isOpen && renderChatButton()}
+      {isOpen && renderChatPopup()}
+    </>
   );
 };
 

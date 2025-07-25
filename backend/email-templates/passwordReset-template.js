@@ -16,4 +16,5 @@ module.exports = (firstName, url) => `<!-- CONTENT-->
     </tr>
   </tbody>
 </table>
+
 <p>If you didn't forget your password, please ignore this email!</p>`;

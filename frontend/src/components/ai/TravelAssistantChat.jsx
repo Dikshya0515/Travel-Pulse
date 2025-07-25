@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useFetchAllToursQuery } from '../../redux/apis/tourApi';
 import './TravelAssistantChat.css';
+import ReactMarkdown from 'react-markdown';
 
 // OpenAI API configuration
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
@@ -90,94 +91,6 @@ function TourCardRenderer({ tours }) {
   );
 }
 
-// Renders AI messages with visually distinct section titles and content
-function MessageRenderer({ text }) {
-  // Clean up text and split into blocks
-  let cleanText = text.trim().replace(/^[-]+|[-]+$/g, '').trim();
-  let blocks = cleanText.split(/\n\s*\n/).filter(Boolean);
-
-  // Try to extract tours from markdown or plain formats
-  const tours = [];
-  let summary = '';
-  for (let block of blocks) {
-    block = block.replace(/\*\*/g, '').replace(/^\*+|\*+$/g, '').trim();
-    const urlMatch = block.match(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/);
-    const urlPlainMatch = block.match(/URL:\s*(https?:\/\/[^\s)]+)/i);
-    let name = block.match(/^(?:Name:)?\s*([A-Z][A-Za-z0-9\s\-']{3,})/i)?.[1]?.trim();
-    let description = block.match(/Description:\s*([\s\S]*?)(?=Price:|URL:|\[|$)/i)?.[1]?.replace(/\*\*/g, '').trim();
-    let price = block.match(/Price:\s*\$?(\d+[\d,.]*)/i)?.[1]?.trim();
-    let url = urlMatch ? urlMatch[2] : (urlPlainMatch ? urlPlainMatch[1] : null);
-    if (name && url) {
-      tours.push({ name, description, price, url });
-    } else if (block && !block.toLowerCase().startsWith('name:')) {
-      summary += block + '\n\n';
-    }
-  }
-  summary = summary.trim();
-
-  // If we have at least one valid tour, render as cards with summary below
-  if (tours.length > 0) {
-    return (
-      <>
-        <TourCardRenderer tours={tours} />
-        {summary && <div className="ai-message-summary">{summary}</div>}
-      </>
-    );
-  }
-
-  // Otherwise, render plain, visually distinct sections for titles and content
-  const lines = text.split(/\r?\n/);
-  const urlRegex = /(https?:\/\/[^\s)]+)/g;
-  const titleRegex = /^(Name|Description|Price|URL|Location|Difficulty|Duration):\s*(.*)$/i;
-
-  return (
-    <div className="ai-message-rendered">
-      {lines.map((line, idx) => {
-        const titleMatch = line.match(titleRegex);
-        if (titleMatch) {
-          return (
-            <div key={idx} className="ai-message-section">
-              <span className="ai-message-section-title">{titleMatch[1]}:</span>
-              <span className="ai-message-section-content"> {renderLine(titleMatch[2])}</span>
-            </div>
-          );
-        }
-        // Render normal line
-        return <div key={idx}>{renderLine(line)}</div>;
-      })}
-    </div>
-  );
-
-  // Helper to render URLs as clickable links
-  function renderLine(line) {
-    const parts = [];
-    let lastIdx = 0;
-    let match;
-    let idx = 0;
-    while ((match = urlRegex.exec(line)) !== null) {
-      if (match.index > lastIdx) {
-        parts.push(line.slice(lastIdx, match.index));
-      }
-      parts.push(
-        <a
-          key={`url-${idx}`}
-          href={match[0]}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ai-message-link"
-        >
-          {match[0]}
-        </a>
-      );
-      lastIdx = match.index + match[0].length;
-      idx++;
-    }
-    if (lastIdx < line.length) {
-      parts.push(line.slice(lastIdx));
-    }
-    return parts;
-  }
-}
 
 // Main AI Assistant widget with floating button and popup
 const TravelAssistantChat = () => {
@@ -292,7 +205,7 @@ const TravelAssistantChat = () => {
       <div className="ai-chat-messages">
         {messages.map((msg, idx) => (
           <div key={idx} className={`ai-chat-message ${msg.sender}`}>
-            {msg.sender === 'ai' ? <MessageRenderer text={msg.text} /> : msg.text}
+            {msg.sender === 'ai' ? <ReactMarkdown>{msg.text}</ReactMarkdown>  : msg.text}
           </div>
         ))}
         {loading && <div className="ai-chat-message ai">Thinking...</div>}
